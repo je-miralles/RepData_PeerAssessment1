@@ -61,7 +61,9 @@ print(median_steps)
 ```r
 mean_steps_per_interval = aggregate(x=steps_df$steps, by=list(steps_df$interval),
                                     FUN=mean, na.rm=TRUE, na.action=NULL, drop=FALSE)
-plot(mean_steps_per_interval$Group.1, mean_steps_per_interval$x, type = "l",
+names(mean_steps_per_interval)[1] <- "interval"
+names(mean_steps_per_interval)[2] <- "steps"
+plot(mean_steps_per_interval$interval, mean_steps_per_interval$steps, type = "l",
      main="Average Daily Activity Pattern", ylab="Average Steps", xlab="Interval" )
 ```
 
@@ -71,7 +73,7 @@ plot(mean_steps_per_interval$Group.1, mean_steps_per_interval$x, type = "l",
 
 
 ```r
-print(mean_steps_per_interval$Group.1[which.max(mean_steps_per_interval$x)])
+print(mean_steps_per_interval$interval[which.max(mean_steps_per_interval$steps)])
 ```
 
 ```
@@ -100,7 +102,7 @@ I will be using the mean for the 5-minute interval to replace the NA values. I b
 
 ```r
 steps_df_filled <- data.frame(steps_df)
-steps_df_filled$steps <- replace(steps_df$steps, which(is.na(steps_df$steps)), mean_steps_per_interval$x)
+steps_df_filled$steps <- replace(steps_df$steps, which(is.na(steps_df$steps)), mean_steps_per_interval$steps)
 ```
 
 ### 4. Make a histogram of the total number of steps taken each day and Calculate and report the **mean** and **median** total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?
