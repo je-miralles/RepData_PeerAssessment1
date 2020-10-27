@@ -10,7 +10,7 @@ output:
 
 ### 1. Load the data (i.e. `read.csv()`)
 
-```{r}
+```{r echo=TRUE}
 unzip("activity.zip")
 steps_df <- read.csv("activity.csv")
 ```
@@ -22,7 +22,7 @@ Not Needed
 
 ### 1. Make a histogram of the total number of steps taken each day
 
-``` {r}
+``` {r echo=TRUE}
 total_steps_per_day = aggregate(x=steps_df$steps, by=list(steps_df$date), sum)
 hist(total_steps_per_day$x, breaks=10, main="Histogram of Total Steps per Day",
      xlab="Total Steps per Day")
@@ -30,7 +30,7 @@ hist(total_steps_per_day$x, breaks=10, main="Histogram of Total Steps per Day",
 
 ### 2. Calculate and report the **mean** and **median** total number of steps taken per day
 
-``` {r}
+``` {r echo=TRUE}
 mean_steps = mean(total_steps_per_day$x, na.rm=TRUE)
 print(mean_steps)
 median_steps = median(total_steps_per_day$x, na.rm=TRUE)
@@ -41,7 +41,7 @@ print(median_steps)
 
 ### 1. Make a time series plot (i.e. `type = "l"`) of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
 
-``` {r}
+``` {r echo=TRUE}
 mean_steps_per_interval = aggregate(x=steps_df$steps, by=list(steps_df$interval),
                                     FUN=mean, na.rm=TRUE, na.action=NULL, drop=FALSE)
 names(mean_steps_per_interval)[1] <- "interval"
@@ -52,7 +52,7 @@ plot(mean_steps_per_interval$interval, mean_steps_per_interval$steps, type = "l"
 
 ### 2. Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 
-``` {r}
+``` {r echo=TRUE}
 print(mean_steps_per_interval$interval[which.max(mean_steps_per_interval$steps)])
 ```
 
@@ -60,7 +60,7 @@ print(mean_steps_per_interval$interval[which.max(mean_steps_per_interval$steps)]
 
 ### 1. Calculate and report the total number of missing values in the dataset (i.e. the total number of rows with `NA`s)
 
-``` {r}
+``` {r echo=TRUE}
 colSums(is.na(steps_df))
 ```
 
@@ -69,14 +69,14 @@ I will be using the mean for the 5-minute interval to replace the NA values. I b
 
 ### 3. Create a new dataset that is equal to the original dataset but with the missing data filled in.
 
-``` {r}
+``` {r echo=TRUE}
 steps_df_filled <- data.frame(steps_df)
 steps_df_filled$steps <- replace(steps_df$steps, which(is.na(steps_df$steps)), mean_steps_per_interval$steps)
 ```
 
 ### 4. Make a histogram of the total number of steps taken each day and Calculate and report the **mean** and **median** total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?
 
-``` {r}
+``` {r echo=TRUE}
 total_steps_per_day_filled = aggregate(x=steps_df_filled$steps, by=list(steps_df_filled$date), sum)
 hist(total_steps_per_day_filled$x, breaks=10, main="Histogram of Total Steps per Day",
      xlab="Total Steps per Day")
@@ -93,7 +93,7 @@ The values for mean steps per day remained the same at 10766.19. However, since 
 
 ### 1. Create a new factor variable in the dataset with two levels -- "weekday" and "weekend" indicating whether a given date is a weekday or weekend day.
 
-``` {r}
+``` {r echo=TRUE}
 weekday_names <- c('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday')
 steps_df_filled$f_daytype <- factor((weekdays(as.Date(steps_df_filled$date, '%Y-%m-%d')) %in% weekday_names),
                                     levels=c(FALSE, TRUE), labels=c('weekend', 'weekday'))
@@ -101,7 +101,7 @@ steps_df_filled$f_daytype <- factor((weekdays(as.Date(steps_df_filled$date, '%Y-
 
 ### 1. Make a panel plot containing a time series plot (i.e. `type = "l"`) of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis). The plot should look something like the following, which was created using **simulated data**:
 
-``` {r}
+``` {r echo=TRUE}
 mean_steps_per_interval = aggregate(steps_df_filled$steps,
                                     list(steps_df_filled$interval, steps_df_filled$f_daytype),
                                     FUN=mean, na.rm=TRUE, na.action=NULL, drop=FALSE)
